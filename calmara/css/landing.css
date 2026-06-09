@@ -1,0 +1,597 @@
+/* Calmara Landing — clean, conversion-focused */
+:root {
+  --cal-cream: #F5F0E8;
+  --cal-cream-2: #FAF6F0;
+  --cal-blue: #1B2D4A;
+  --cal-blue-light: #2A4670;
+  --cal-accent: #C9A961;
+  --cal-text: #1B2D4A;
+  --cal-muted: #6B7280;
+  --cal-white: #FFFFFF;
+  --cal-border: #E5DCD0;
+  --cal-success: #2D6A4F;
+  --cal-danger: #C53030;
+  --cal-radius: 12px;
+  --cal-shadow: 0 4px 20px rgba(27,45,74,0.08);
+}
+
+* { box-sizing: border-box; }
+
+.calmara-landing {
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", sans-serif;
+  color: var(--cal-text);
+  background: var(--cal-cream);
+  line-height: 1.6;
+  padding-bottom: 80px;
+}
+
+.calmara-landing .cal-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.calmara-landing .cal-h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.1;
+  font-weight: 800;
+  margin: 0 0 1rem;
+  letter-spacing: -0.02em;
+}
+
+.calmara-landing .cal-h2 {
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+  line-height: 1.2;
+  font-weight: 700;
+  margin: 0 0 1.5rem;
+  letter-spacing: -0.01em;
+}
+
+.calmara-landing .cal-accent { color: var(--cal-accent); }
+.calmara-landing .cal-center { text-align: center; }
+.calmara-landing .cal-eyebrow {
+  display: inline-block;
+  background: var(--cal-blue);
+  color: var(--cal-cream);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 1rem;
+}
+
+/* Buttons */
+.calmara-landing .cal-btn {
+  display: inline-block;
+  padding: 16px 32px;
+  border-radius: var(--cal-radius);
+  font-weight: 700;
+  text-decoration: none;
+  text-align: center;
+  transition: transform 0.15s, box-shadow 0.15s;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.calmara-landing .cal-btn-primary {
+  background: var(--cal-blue);
+  color: var(--cal-cream);
+  box-shadow: 0 4px 14px rgba(27,45,74,0.25);
+}
+.calmara-landing .cal-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(27,45,74,0.35);
+}
+.calmara-landing .cal-btn-outline {
+  background: transparent;
+  color: var(--cal-blue);
+  border: 2px solid var(--cal-blue);
+}
+.calmara-landing .cal-btn-lg { padding: 20px 48px; font-size: 1.15rem; }
+.calmara-landing .cal-btn-sm { padding: 10px 20px; font-size: 0.9rem; }
+
+/* Placeholders */
+.calmara-landing .cal-placeholder {
+  background: linear-gradient(135deg, #d4c8b8 0%, #b8a890 100%);
+  color: var(--cal-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: var(--cal-radius);
+  padding: 20px;
+}
+.calmara-landing .cal-placeholder-hero { aspect-ratio: 4/5; min-height: 400px; }
+.calmara-landing .cal-placeholder-product { aspect-ratio: 1/1; min-height: 350px; }
+.calmara-landing .cal-step-ph { aspect-ratio: 4/3; }
+.calmara-landing .cal-ba-ph { aspect-ratio: 4/3; min-height: 280px; font-size: 1.2rem; }
+.calmara-landing .cal-ba-before { background: linear-gradient(135deg, #d4a8a8 0%, #b89090 100%); }
+.calmara-landing .cal-ba-after { background: linear-gradient(135deg, #a8d4b8 0%, #90b890 100%); }
+.calmara-landing .cal-logo-ph { aspect-ratio: 3/1; min-height: 60px; font-size: 0.7rem; opacity: 0.6; }
+.calmara-landing .cal-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  font-size: 1.1rem; padding: 0;
+  background: var(--cal-blue);
+  color: var(--cal-cream);
+}
+.calmara-landing .cal-badge-ph {
+  width: 180px; height: 180px; border-radius: 50%;
+  font-size: 1.5rem; line-height: 1.2;
+  background: var(--cal-accent);
+  color: var(--cal-blue);
+}
+
+/* 1. Urgency bar */
+.calmara-landing .cal-urgency-bar {
+  background: var(--cal-blue);
+  color: var(--cal-cream);
+  text-align: center;
+  padding: 10px 0;
+  font-size: 0.9rem;
+}
+.calmara-landing .cal-urgency-bar strong { color: var(--cal-accent); }
+.calmara-landing .cal-pulse {
+  display: inline-block;
+  width: 8px; height: 8px;
+  background: var(--cal-accent);
+  border-radius: 50%;
+  margin-right: 8px;
+  animation: cal-pulse 1.5s infinite;
+}
+@keyframes cal-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+
+/* 2. Hero */
+.calmara-landing .cal-hero {
+  padding: 60px 0;
+  background: var(--cal-cream-2);
+}
+.calmara-landing .cal-hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .calmara-landing .cal-hero-grid { grid-template-columns: 1fr; gap: 30px; }
+}
+.calmara-landing .cal-rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+.calmara-landing .cal-stars { color: var(--cal-accent); font-size: 1.1rem; }
+.calmara-landing .cal-rating-text { color: var(--cal-muted); font-size: 0.9rem; }
+.calmara-landing .cal-hero-sub {
+  font-size: 1.15rem;
+  color: var(--cal-blue-light);
+  margin: 0 0 1.5rem;
+}
+.calmara-landing .cal-hero-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+}
+.calmara-landing .cal-hero-bullets li {
+  padding: 8px 0;
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+.calmara-landing .cal-trust-mini {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--cal-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+/* 3. Trust bar */
+.calmara-landing .cal-trust-bar {
+  padding: 40px 0;
+  background: var(--cal-white);
+  border-top: 1px solid var(--cal-border);
+  border-bottom: 1px solid var(--cal-border);
+}
+.calmara-landing .cal-trust-label {
+  text-align: center;
+  color: var(--cal-muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.calmara-landing .cal-logos {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 30px;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .calmara-landing .cal-logos { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* 4. Problem */
+.calmara-landing .cal-problem { padding: 80px 0; }
+.calmara-landing .cal-problem-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 2.5rem;
+}
+@media (max-width: 768px) { .calmara-landing .cal-problem-grid { grid-template-columns: repeat(2, 1fr); } }
+.calmara-landing .cal-problem-item {
+  background: var(--cal-white);
+  padding: 28px 22px;
+  border-radius: var(--cal-radius);
+  box-shadow: var(--cal-shadow);
+}
+.calmara-landing .cal-problem-item h3 { font-size: 1.05rem; margin: 12px 0 8px; }
+.calmara-landing .cal-problem-item p { color: var(--cal-muted); font-size: 0.9rem; margin: 0; }
+.calmara-landing .cal-icon { font-size: 2rem; }
+
+/* 5. Product */
+.calmara-landing .cal-product {
+  padding: 80px 0;
+  background: var(--cal-white);
+}
+.calmara-landing .cal-product-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 60px;
+  align-items: center;
+}
+@media (max-width: 768px) { .calmara-landing .cal-product-grid { grid-template-columns: 1fr; } }
+.calmara-landing .cal-lead {
+  font-size: 1.1rem;
+  color: var(--cal-blue-light);
+  margin-bottom: 1.5rem;
+}
+.calmara-landing .cal-features { list-style: none; padding: 0; }
+.calmara-landing .cal-features li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--cal-border);
+}
+.calmara-landing .cal-features li:last-child { border-bottom: none; }
+
+/* 6. Benefits */
+.calmara-landing .cal-benefits { padding: 80px 0; }
+.calmara-landing .cal-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 3rem;
+}
+@media (max-width: 768px) { .calmara-landing .cal-benefits-grid { grid-template-columns: repeat(2, 1fr); } }
+.calmara-landing .cal-benefit-card {
+  background: var(--cal-white);
+  padding: 30px 24px;
+  border-radius: var(--cal-radius);
+  border: 1px solid var(--cal-border);
+}
+.calmara-landing .cal-benefit-num {
+  color: var(--cal-accent);
+  font-weight: 800;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.calmara-landing .cal-benefit-card h3 { font-size: 1.1rem; margin: 0 0 8px; }
+.calmara-landing .cal-benefit-card p { color: var(--cal-muted); font-size: 0.95rem; margin: 0; }
+
+/* 7. How */
+.calmara-landing .cal-how {
+  padding: 80px 0;
+  background: var(--cal-white);
+}
+.calmara-landing .cal-how-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  margin-top: 3rem;
+}
+@media (max-width: 768px) { .calmara-landing .cal-how-steps { grid-template-columns: 1fr; } }
+.calmara-landing .cal-how-step { text-align: center; }
+.calmara-landing .cal-how-num {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: var(--cal-blue);
+  color: var(--cal-cream);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+.calmara-landing .cal-how-step h3 { margin: 1rem 0 0.5rem; }
+
+/* 8. Before/After */
+.calmara-landing .cal-ba { padding: 80px 0; }
+.calmara-landing .cal-ba-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-top: 2rem;
+}
+@media (max-width: 600px) { .calmara-landing .cal-ba-grid { grid-template-columns: 1fr; } }
+.calmara-landing .cal-ba-label {
+  text-align: center;
+  font-weight: 700;
+  margin-top: 1rem;
+}
+
+/* 9. Testimonials */
+.calmara-landing .cal-testimonials {
+  padding: 80px 0;
+  background: var(--cal-white);
+}
+.calmara-landing .cal-testi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 2.5rem;
+}
+@media (max-width: 768px) { .calmara-landing .cal-testi-grid { grid-template-columns: 1fr; } }
+.calmara-landing .cal-testi-card {
+  background: var(--cal-cream-2);
+  padding: 28px 24px;
+  border-radius: var(--cal-radius);
+}
+.calmara-landing .cal-testi-card p {
+  font-style: italic;
+  margin: 12px 0 20px;
+}
+.calmara-landing .cal-testi-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 10. Compare */
+.calmara-landing .cal-compare { padding: 80px 0; }
+.calmara-landing .cal-compare-table {
+  max-width: 800px;
+  margin: 2.5rem auto 0;
+  background: var(--cal-white);
+  border-radius: var(--cal-radius);
+  overflow: hidden;
+  box-shadow: var(--cal-shadow);
+}
+.calmara-landing .cal-compare-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--cal-border);
+  align-items: center;
+}
+.calmara-landing .cal-compare-row:last-child { border-bottom: none; }
+.calmara-landing .cal-compare-head {
+  background: var(--cal-blue);
+  color: var(--cal-cream);
+  font-weight: 700;
+}
+.calmara-landing .cal-compare-row > div { text-align: center; }
+.calmara-landing .cal-compare-row > div:first-child { text-align: left; }
+.calmara-landing .cal-compare-us {
+  color: var(--cal-success);
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+.calmara-landing .cal-compare-head .cal-compare-us {
+  color: var(--cal-accent);
+  font-size: 1rem;
+}
+
+/* 11. Bundles */
+.calmara-landing .cal-bundles {
+  padding: 80px 0;
+  background: var(--cal-white);
+}
+.calmara-landing .cal-bundles-sub {
+  color: var(--cal-muted);
+  margin-bottom: 2.5rem;
+}
+.calmara-landing .cal-bundles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+@media (max-width: 900px) { .calmara-landing .cal-bundles-grid { grid-template-columns: 1fr; } }
+.calmara-landing .cal-bundle {
+  background: var(--cal-cream-2);
+  border: 2px solid var(--cal-border);
+  border-radius: var(--cal-radius);
+  padding: 32px 28px;
+  text-align: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.calmara-landing .cal-bundle-best {
+  border-color: var(--cal-accent);
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(201,169,97,0.25);
+}
+@media (max-width: 900px) { .calmara-landing .cal-bundle-best { transform: scale(1); } }
+.calmara-landing .cal-bundle-tag {
+  position: absolute;
+  top: -14px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--cal-accent);
+  color: var(--cal-blue);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+.calmara-landing .cal-bundle-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--cal-muted);
+  margin-bottom: 1rem;
+}
+.calmara-landing .cal-bundle-price {
+  margin-bottom: 0.5rem;
+}
+.calmara-landing .cal-old {
+  text-decoration: line-through;
+  color: var(--cal-muted);
+  margin-right: 10px;
+  font-size: 1.1rem;
+}
+.calmara-landing .cal-new {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--cal-blue);
+}
+.calmara-landing .cal-bundle-perunit {
+  font-size: 0.85rem;
+  color: var(--cal-success);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+.calmara-landing .cal-bundle-feats {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  margin: 0 0 2rem;
+  flex-grow: 1;
+}
+.calmara-landing .cal-bundle-feats li {
+  padding: 6px 0;
+  font-size: 0.95rem;
+}
+
+/* 12. Reviews wall */
+.calmara-landing .cal-reviews { padding: 80px 0; }
+.calmara-landing .cal-reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 2.5rem;
+}
+@media (max-width: 768px) { .calmara-landing .cal-reviews-grid { grid-template-columns: 1fr; } }
+.calmara-landing .cal-review-card {
+  background: var(--cal-white);
+  padding: 20px;
+  border-radius: var(--cal-radius);
+  border: 1px solid var(--cal-border);
+}
+.calmara-landing .cal-review-card strong { display: block; margin: 6px 0; }
+.calmara-landing .cal-review-card p { font-size: 0.92rem; color: var(--cal-blue-light); margin: 0 0 8px; }
+.calmara-landing .cal-review-card small { color: var(--cal-muted); }
+
+/* 13. Guarantee */
+.calmara-landing .cal-guarantee {
+  padding: 80px 0;
+  background: var(--cal-blue);
+  color: var(--cal-cream);
+}
+.calmara-landing .cal-guarantee .cal-h2 { color: var(--cal-cream); }
+.calmara-landing .cal-guarantee .cal-accent { color: var(--cal-accent); }
+.calmara-landing .cal-guarantee-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 40px;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .calmara-landing .cal-guarantee-grid { grid-template-columns: 1fr; text-align: center; }
+  .calmara-landing .cal-badge-ph { margin: 0 auto; }
+}
+.calmara-landing .cal-guarantee-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+.calmara-landing .cal-guarantee-list li {
+  padding: 6px 0;
+  font-size: 1.05rem;
+}
+
+/* 14. FAQ */
+.calmara-landing .cal-faq {
+  padding: 80px 0;
+  background: var(--cal-white);
+}
+.calmara-landing .cal-faq-list {
+  max-width: 800px;
+  margin: 2.5rem auto 0;
+}
+.calmara-landing .cal-faq-item {
+  background: var(--cal-cream-2);
+  padding: 20px 24px;
+  border-radius: var(--cal-radius);
+  margin-bottom: 12px;
+  border: 1px solid var(--cal-border);
+}
+.calmara-landing .cal-faq-item summary {
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+  padding-right: 30px;
+}
+.calmara-landing .cal-faq-item summary::after {
+  content: "+";
+  position: absolute;
+  right: 0;
+  top: -2px;
+  font-size: 1.5rem;
+  color: var(--cal-accent);
+  transition: transform 0.2s;
+}
+.calmara-landing .cal-faq-item[open] summary::after { content: "−"; }
+.calmara-landing .cal-faq-item p { margin: 12px 0 0; color: var(--cal-blue-light); }
+
+/* 15. Final CTA */
+.calmara-landing .cal-final-cta {
+  padding: 80px 0;
+  background: var(--cal-cream-2);
+}
+.calmara-landing .cal-final-cta p {
+  font-size: 1.1rem;
+  color: var(--cal-blue-light);
+  margin: 0 0 2rem;
+}
+
+/* 16. Sticky CTA */
+.calmara-landing .cal-sticky-cta {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--cal-white);
+  border-top: 1px solid var(--cal-border);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+.calmara-landing .cal-sticky-info {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.85rem;
+}
+.calmara-landing .cal-sticky-info > strong { font-size: 0.95rem; }
+.calmara-landing .cal-sticky-info s { color: var(--cal-muted); }
+
+@media (min-width: 769px) {
+  .calmara-landing .cal-sticky-cta {
+    max-width: 400px;
+    left: auto;
+    right: 20px;
+    bottom: 20px;
+    border-radius: var(--cal-radius);
+    border: 1px solid var(--cal-border);
+  }
+}
