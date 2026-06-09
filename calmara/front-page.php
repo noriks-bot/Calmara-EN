@@ -31,6 +31,10 @@ $replacements = array(
     '../../cdn-assets/'  => $clone_uri . '/cdn-assets/',
     '../../fonts-google/'=> $clone_uri . '/fonts-google/',
     '../../fonts-static/'=> $clone_uri . '/fonts-static/',
+    // Scraper artifact: source has bare "https://cdn-assets/..." (broken URL,
+    // missing domain). Rewrite to our hosted assets so lazy-load video/img work.
+    'https://cdn-assets/' => $clone_uri . '/cdn-assets/',
+    '"//cdn-assets/'      => '"' . $clone_uri . '/cdn-assets/',
     '../cdn/'            => $clone_uri . '/site/cdn/',
     '../checkouts/'      => $clone_uri . '/site/checkouts/',
     'href="thera.html'   => 'href="' . esc_url( home_url( '/' ) ),
