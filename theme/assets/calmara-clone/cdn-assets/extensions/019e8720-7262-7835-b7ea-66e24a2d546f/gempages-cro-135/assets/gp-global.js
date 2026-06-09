@@ -1,0 +1,1 @@
+/* stub - Shopify clone artifact */
