@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <?php
 /**
  * Calmara front page — serves Shopify clone thera.html as homepage.
@@ -138,3 +139,6 @@ $html = preg_replace( '#</body>#i', $wc_handler . '</body>', $html, 1 );
 header( 'Content-Type: text/html; charset=UTF-8' );
 echo $html;
 exit;
+=======
+<?php readfile("/var/www/calmara/si/static/site/products/thera.html"); ?>
+>>>>>>> Stashed changes

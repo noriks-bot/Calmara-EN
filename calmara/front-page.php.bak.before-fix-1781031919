@@ -1,0 +1,178 @@
+<?php
+/**
+ * Calmara front page — serves Shopify clone thera.html as homepage.
+ * V3 patch 2026-06-09 by Boris — AGGRESSIVE external script strip.
+ *
+ * @package calmara
+ */
+
+$clone_dir   = get_template_directory()     . '/assets/calmara-clone';
+$clone_uri   = get_template_directory_uri() . '/assets/calmara-clone';
+$source_file = $clone_dir . '/site/products/thera.html';
+
+if ( ! file_exists( $source_file ) ) {
+    status_header( 500 );
+    echo 'Clone source missing: ' . esc_html( $source_file );
+    exit;
+}
+
+$html = file_get_contents( $source_file );
+
+// === Asset path rewrites (LOCAL paths only) ===
+$replacements = array(
+    '../../cdn-assets/'  => $clone_uri . '/cdn-assets/',
+    '../../fonts-google/'=> $clone_uri . '/fonts-google/',
+    '../../fonts-static/'=> $clone_uri . '/fonts-static/',
+    'https://cdn-assets/' => $clone_uri . '/cdn-assets/',
+    '"//cdn-assets/'      => '"' . $clone_uri . '/cdn-assets/',
+    '../cdn/'            => $clone_uri . '/site/cdn/',
+    '../checkouts/'      => $clone_uri . '/site/checkouts/',
+    'href="thera.html'   => 'href="' . esc_url( home_url( '/' ) ),
+    'href="thera-back.html' => 'href="' . $clone_uri . '/site/products/thera-back.html',
+    'href="thera-wrap.html' => 'href="' . $clone_uri . '/site/products/thera-wrap.html',
+    'href="thera.oembed'    => 'href="' . $clone_uri . '/site/products/thera.oembed',
+);
+$html = strtr( $html, $replacements );
+
+// === AGGRESSIVE: strip ALL <script src="..."> where src is NOT on our host ===
+// Allow only: relative URLs, /wp-content, our subdomain, our parent noriks.com
+$current_host = $_SERVER['HTTP_HOST'] ?? '';
+$html = preg_replace_callback(
+    '#<script[^>]*\bsrc=(?:"([^"]+)"|\'([^\']+)\')[^>]*></script>#i',
+    function( $m ) use ( $current_host ) {
+        $src = $m[1] !== '' ? $m[1] : $m[2];
+        // Allow our host + relative + WP paths
+        if ( $src === '' ) return "\n";
+        if ( $src[0] === '/' && ( ! isset($src[1]) || $src[1] !== '/' ) ) return $m[0]; // relative /
+        if ( strpos( $src, $current_host ) !== false ) return $m[0]; // same subdomain
+        if ( strpos( $src, 'noriks.com' ) !== false ) return $m[0]; // parent domain
+        // Anything else (gemcommerce, calmara.com, fonts.shopifycdn, ...) — REMOVE
+        return "\n";
+    },
+    $html
+);
+
+// Also strip any <link rel="stylesheet" href="..."> to external (non-noriks)
+$html = preg_replace_callback(
+    '#<link[^>]*\bhref=(?:"([^"]+)"|\'([^\']+)\')[^>]*>#i',
+    function( $m ) use ( $current_host ) {
+        $href = $m[1] !== '' ? $m[1] : $m[2];
+        if ( $href === '' ) return "\n";
+        if ( $href[0] === '/' && ( ! isset($href[1]) || $href[1] !== '/' ) ) return $m[0];
+        if ( strpos( $href, $current_host ) !== false ) return $m[0];
+        if ( strpos( $href, 'noriks.com' ) !== false ) return $m[0];
+        // Allow Google Fonts (commonly needed)
+        if ( strpos( $href, 'fonts.googleapis.com' ) !== false ) return $m[0];
+        if ( strpos( $href, 'fonts.gstatic.com' ) !== false ) return $m[0];
+        // Otherwise — remove
+        return "\n";
+    },
+    $html
+);
+
+// === Strip inline Shopify-feature scripts that would error ===
+$html = preg_replace( '#<script[^>]*data-source-attribution="shopify\.[^"]*"[^>]*>[\s\S]*?</script>#i', "\n", $html );
+$html = preg_replace( '#<script[^>]*id="shopify-features"[^>]*>[\s\S]*?</script>#i', "\n", $html );
+$html = preg_replace( '#<script[^>]*id="apple-pay-shop-capabilities"[^>]*>[\s\S]*?</script>#i', "\n", $html );
+$html = preg_replace( '#<script[^>]*id="shop-js-analytics"[^>]*>[\s\S]*?</script>#i', "\n", $html );
+$html = preg_replace( '#<script[^>]*id="captcha-bootstrap"[^>]*>[\s\S]*?</script>#i', "\n", $html );
+$html = preg_replace( '#<script[^>]*id="__st"[^>]*>[\s\S]*?</script>#i', "\n", $html );
+$html = preg_replace( '#<script[^>]*id="viewed_product"[^>]*>[\s\S]*?</script>#i', "\n", $html );
+$html = preg_replace( '#<script[^>]*id="subscription-helper"[^>]*>[\s\S]*?</script>#i', "\n", $html );
+$html = preg_replace( '#<script[^>]*id="custom-js-[^"]*"[^>]*>[\s\S]*?</script>#i', "\n", $html );
+$html = preg_replace( '#<script[^>]*class="analytics"[^>]*>[\s\S]*?</script>#i', "\n", $html );
+$html = preg_replace( '#<script[^>]*data-instant-track[^>]*>[\s\S]*?</script>#i', "\n", $html );
+$html = preg_replace( '#<script[^>]*class="gps-link"[^>]*>[\s\S]*?</script>#i', "\n", $html );
+$html = preg_replace( '#<script[^>]*id="shopify-cfh-end"[^>]*>[\s\S]*?</script>#i', "\n", $html );
+$html = preg_replace( '#<script[^>]*id="gp-interaction"[^>]*>[\s\S]*?</script>#i', "\n", $html );
+
+// === Strip <meta> preconnect/dns-prefetch/preload for non-noriks hosts ===
+$html = preg_replace_callback(
+    '#<link[^>]*\brel="(?:preconnect|dns-prefetch|preload|modulepreload)"[^>]*\bhref=(?:"([^"]+)"|\'([^\']+)\')[^>]*>#i',
+    function( $m ) use ( $current_host ) {
+        $href = $m[1] !== '' ? $m[1] : $m[2];
+        if ( strpos( $href, $current_host ) !== false ) return $m[0];
+        if ( strpos( $href, 'noriks.com' ) !== false ) return $m[0];
+        if ( strpos( $href, 'fonts.googleapis.com' ) !== false ) return $m[0];
+        if ( strpos( $href, 'fonts.gstatic.com' ) !== false ) return $m[0];
+        return "\n";
+    },
+    $html
+);
+
+// === Minimal Shopify globals stub (so inline refs don't ReferenceError) ===
+$shopify_stub = '<script>window.Shopify=window.Shopify||{};Shopify.shop=Shopify.shop||"calmara.local";Shopify.locale=Shopify.locale||"en";Shopify.currency=Shopify.currency||{active:"EUR",rate:"1.0"};Shopify.country=Shopify.country||"SI";Shopify.routes=Shopify.routes||{root:"/"};Shopify.theme=Shopify.theme||{name:"calmara",id:1,handle:"calmara",style:{id:null,handle:null},role:"main"};Shopify.cdnHost=Shopify.cdnHost||"";Shopify.designMode=false;Shopify.PaymentButton=Shopify.PaymentButton||{init:function(){}};window.ShopifyAnalytics=window.ShopifyAnalytics||{meta:{},lib:{track:function(){},page:function(){},identify:function(){}},merchantGoogleAnalytics:function(){}};window.ShopifyPay=window.ShopifyPay||{apiHost:"",redirectState:null};window.trekkie=window.trekkie||{ready:function(){},load:function(){},config:function(){},methods:["identify","page","ready","track","trackForm","trackLink"]};window._ALConfig=window._ALConfig||{widgetJsPath:"",customerId:null};</script>';
+$html = preg_replace( '#<head[^>]*>#i', '$0' . $shopify_stub, $html, 1 );
+
+// === Per-market title + lang fix ===
+$market_titles = array(
+    'si-calmara' => array( 'lang' => 'sl-SI', 'title' => 'Calmara — Slovenija' ),
+    'hr-calmara' => array( 'lang' => 'hr-HR', 'title' => 'Calmara — Hrvatska' ),
+    'hu-calmara' => array( 'lang' => 'hu-HU', 'title' => 'Calmara — Magyarország' ),
+    'pl-calmara' => array( 'lang' => 'pl-PL', 'title' => 'Calmara — Polska' ),
+    'sk-calmara' => array( 'lang' => 'sk-SK', 'title' => 'Calmara — Slovensko' ),
+    'cz-calmara' => array( 'lang' => 'cs-CZ', 'title' => 'Calmara — Česko' ),
+    'gr-calmara' => array( 'lang' => 'el-GR', 'title' => 'Calmara — Ελλάδα' ),
+);
+$host_lower = strtolower( $current_host );
+$market_key = '';
+foreach ( array_keys( $market_titles ) as $k ) {
+    if ( strpos( $host_lower, $k ) !== false ) { $market_key = $k; break; }
+}
+if ( $market_key !== '' ) {
+    $mt = $market_titles[ $market_key ];
+    $html = preg_replace( '#<html([^>]*)lang="[^"]*"#i', '<html$1lang="' . $mt['lang'] . '"', $html, 1 );
+    $html = preg_replace( '#<title>[^<]*</title>#i', '<title>' . esc_html( $mt['title'] ) . '</title>', $html, 1 );
+    $html = preg_replace( '#<meta property="og:title" content="[^"]*"#i', '<meta property="og:title" content="' . esc_attr( $mt['title'] ) . '"', $html, 1 );
+}
+
+// === WC ADD TO CART handler ===
+$wc_product_id = (int) get_option( 'calmara_test_product_id', 0 );
+if ( $wc_product_id < 1 ) { $wc_product_id = 14; }
+$wc_cart_url   = function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : '/cart/';
+$wc_handler = '<script>(function(){
+  var PID = ' . intval( $wc_product_id ) . ';
+  var CART = ' . wp_json_encode( $wc_cart_url ) . ';
+  function bind(){
+    var sel = [
+      "button[name=\"add\"]","button.add-to-cart","button[data-add-to-cart]",
+      "form[action*=cart] button[type=submit]",
+      "a.add-to-cart","[data-product-add-to-cart]","button.product-form__submit",
+      "button#AddToCart","button[id*=AddToCart]","button[class*=add-to-cart]",
+      "button[class*=AddToCart]","button[class*=product-form__cart]",
+      "button[class*=cart-btn]","button[class*=buy-now]",
+      "input[name=add]","[data-buy-now]","[data-add-to-cart-button]"
+    ];
+    var btns = document.querySelectorAll(sel.join(","));
+    btns.forEach(function(b){
+      if (b.dataset.wcBound) return;
+      b.dataset.wcBound = "1";
+      b.addEventListener("click", function(e){
+        e.preventDefault(); e.stopPropagation();
+        var qtyEl = document.querySelector("input[name=quantity],input.qty,[data-quantity]");
+        var qty = qtyEl ? (parseInt(qtyEl.value,10)||1) : 1;
+        try { b.innerHTML = "Dodajam…"; b.disabled = true; } catch(_){}
+        var body = new URLSearchParams();
+        body.append("product_id", PID);
+        body.append("quantity", qty);
+        body.append("add-to-cart", PID);
+        fetch("/?wc-ajax=add_to_cart", {
+          method: "POST", credentials: "include",
+          headers: {"Content-Type": "application/x-www-form-urlencoded"},
+          body: body.toString()
+        }).then(function(r){return r.text();})
+          .then(function(){ window.location.href = CART; })
+          .catch(function(){ window.location.href = "/?add-to-cart=" + PID + "&quantity=" + qty; });
+      }, true);
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bind);
+  } else { bind(); }
+  setTimeout(bind, 1500); setTimeout(bind, 3500);
+})();</script>';
+$html = preg_replace( '#</body>#i', $wc_handler . '</body>', $html, 1 );
+
+header( 'Content-Type: text/html; charset=UTF-8' );
+echo $html;
+exit;
