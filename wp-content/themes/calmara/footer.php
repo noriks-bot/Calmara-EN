@@ -1,6 +1,6 @@
 <?php
 /**
- * Calmara theme footer
+ * Norvella theme footer
  * 4-stolpčni dark footer + bottom strip
  *
  * @package calmara
@@ -30,7 +30,7 @@
       <div class="cal-container cal-footer-grid">
 
         <div class="cal-footer-col cal-footer-brand">
-          <div class="cal-footer-logo">CALMARA</div>
+          <div class="cal-footer-logo">NORVELLA</div>
           <p class="cal-footer-tag">Ergonomic pillows for better sleep.<br>30 nights risk-free.</p>
           <div class="cal-footer-socials">
             <a href="#" aria-label="Instagram">
@@ -51,7 +51,7 @@
         <div class="cal-footer-col">
           <h4>Shop</h4>
           <ul>
-            <li><a href="#bundles">Calmara pillow</a></li>
+            <li><a href="#bundles">Norvella pillow</a></li>
             <li><a href="#bundles">Bundles</a></li>
             <li><a href="#">Deals</a></li>
             <li><a href="#">Gift cards</a></li>
@@ -77,7 +77,7 @@
             <li><a href="#">Press</a></li>
           </ul>
           <div class="cal-footer-contact">
-            <p><strong>Support:</strong><br><a href="mailto:info@calmara.si">info@calmara.si</a></p>
+            <p><strong>Support:</strong><br><a href="mailto:info@norvella.si">info@norvella.si</a></p>
           </div>
         </div>
 
@@ -88,7 +88,7 @@
     <div class="cal-footer-bottom">
       <div class="cal-container cal-footer-bottom-inner">
         <div class="cal-footer-copy">
-          © <?php echo date('Y'); ?> Calmara. All rights reserved.
+          © <?php echo date('Y'); ?> Norvella. All rights reserved.
         </div>
         <div class="cal-footer-legal">
           <a href="#">Terms of Use</a>

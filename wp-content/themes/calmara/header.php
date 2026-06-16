@@ -1,6 +1,6 @@
 <?php
 /**
- * Calmara theme header
+ * Norvella theme header
  * Announcement bar + sticky header (logo center + ikoni desno)
  *
  * @package calmara
@@ -60,8 +60,8 @@
         </nav>
       </div>
 
-      <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="cal-logo" aria-label="Calmara">
-        <span class="cal-logo-text">CALMARA</span>
+      <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="cal-logo" aria-label="Norvella">
+        <span class="cal-logo-text">NORVELLA</span>
       </a>
 
       <div class="cal-header-right">
